@@ -1,26 +1,20 @@
 #include <iostream>
-#include "roadmap.h"
-#include<string>
-#include<vector>
+#include "menu.h"
 using namespace std;
 
-vector<roadmap> listOfRoadmaps;
 
-void deleteRoadmap();
-void addRoadmap();
-void displayMenu();
-void displayAllRoadmaps();
 
 int main()
 {
-	int clicker;
+	menu Menu;
+	unsigned int clicker;
 	while (true)
 	{
-		displayMenu();
+		Menu.displayMenu();
 		do
 		{
 			cin >> clicker;
-			while (!cin.fail())
+			while (cin.fail())
 			{
 				cin.clear();
 				cin.ignore(INT_MAX, '\n');
@@ -31,11 +25,13 @@ int main()
 		{
 		case 1:
 		{
-			displayAllRoadmaps();
+			Menu.displayRoadmaps();
+			break;
 		}
 		case 2:
 		{
-			addRoadmap();
+			Menu.addRoadmap();
+			break;
 		}
 		case 3:
 		{
@@ -43,31 +39,48 @@ int main()
 			do
 			{
 				cin >> clicker;
-				while (!cin.fail())
+				while (cin.fail())
 				{
 					cin.clear();
 					cin.ignore(INT_MAX, '\n');
 				}
-			} while (clicker > 5 && clicker < listOfRoadmaps.size());
-			listOfRoadmaps[clicker].editRoadmap();
+			} while (clicker <0 || clicker > listOfRoadmaps.size());
+			Menu.editRoadmap(clicker);
+			break;
 		}
 		case 4:
 		{
-			deleteRoadmap();
+			cout << "Which roadmap you want to delete: ";
+			cin >> clicker;
+				while (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(INT_MAX, '\n');
+				}
+				if (clicker <0 || clicker > listOfRoadmaps.size())
+				{
+					cout << "Incorrect input!" << endl;
+					break;
+				}
+			Menu.deleteRoadmap(clicker);
+			break;
 		}
 		case 5:
 		{
 			cout << "Which roadmap you want to clear: ";
-			do
+			cin >> clicker;
+			while (cin.fail())
 			{
-				cin >> clicker;
-				while (!cin.fail())
-				{
-					cin.clear();
-					cin.ignore(INT_MAX, '\n');
-				}
-			} while (clicker > 5 && clicker < listOfRoadmaps.size());
-			listOfRoadmaps[clicker].clearRoadmap();
+				cin.clear();
+				cin.ignore(INT_MAX, '\n');
+			}
+			if (clicker <0 || clicker > listOfRoadmaps.size())
+			{
+				cout << "Incorrect input!"<<endl;
+				break;
+			}
+			Menu.clearRoadmap(clicker);
+			break;
 		}
 		case 0:
 		{
@@ -75,35 +88,5 @@ int main()
 			break;
 		}
 		}
-	}
-}
-
-void deleteRoadmap()
-{
-	int num;
-	cout << "Which roadmap do you want to delete?";
-	listOfRoadmaps.erase(listOfRoadmaps.begin() + num);
-}
-void addRoadmap()
-{
-	roadmap newroadmap;
-	listOfRoadmaps.push_back(newroadmap);
-}
-void displayMenu()
-{
-	cout << "MENU:" << endl;
-	cout << "1. Display all roadmaps" << endl;
-	cout << "2. Add a new roadmap" << endl;
-	cout << "3. Edit a roadmap" << endl;
-	cout << "4. Delete a roadmap" << endl;
-	cout << "5. Clear a roadmap" << endl;
-	cout << "0. Exit the program" << endl;
-}
-
-void displayAllRoadmaps()
-{
-	for (int i = 0; i < listOfRoadmaps.size(); i++)
-	{
-		listOfRoadmaps[i].displayRoadmap();
 	}
 }
